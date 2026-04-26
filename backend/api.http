@@ -1,0 +1,178 @@
+### Loop & Bloom API - REST Client Test Suite
+
+@base_url = http://localhost:8000
+@content_type = application/json
+
+### Variables (set after registration/login)
+@access_token = 
+
+---
+
+## ==================== AUTH ENDPOINTS ====================
+
+### Health Check
+GET {{base_url}}/health
+
+---
+
+### Register User
+POST {{base_url}}/api/auth/register
+Content-Type: {{content_type}}
+
+{
+  "email": "testuser@example.com",
+  "full_name": "Test User",
+  "password": "testpass123"
+}
+
+---
+
+### Login
+POST {{base_url}}/api/auth/login
+Content-Type: {{content_type}}
+
+{
+  "email": "admin@example.com",
+  "password": "admin123"
+}
+
+---
+
+### Get Current User
+GET {{base_url}}/api/auth/me
+Authorization: Bearer {{access_token}}
+
+---
+
+## ==================== PRODUCT ENDPOINTS ====================
+
+### Get All Products
+GET {{base_url}}/api/products?skip=0&limit=10
+
+---
+
+### Get Product by ID
+GET {{base_url}}/api/products/{product_id}
+
+---
+
+### Create Product (Admin)
+POST {{base_url}}/api/products
+Authorization: Bearer {{access_token}}
+Content-Type: {{content_type}}
+
+{
+  "name": "Custom Blanket",
+  "description": "A beautiful custom crochet blanket",
+  "price": 55.99,
+  "image_url": "https://example.com/blanket.jpg",
+  "stock": 5
+}
+
+---
+
+### Update Product (Admin)
+PUT {{base_url}}/api/products/{product_id}
+Authorization: Bearer {{access_token}}
+Content-Type: {{content_type}}
+
+{
+  "price": 59.99,
+  "stock": 3
+}
+
+---
+
+### Delete Product (Admin)
+DELETE {{base_url}}/api/products/{product_id}
+Authorization: Bearer {{access_token}}
+
+---
+
+## ==================== ORDER ENDPOINTS ====================
+
+### Create Order
+POST {{base_url}}/api/orders
+Authorization: Bearer {{access_token}}
+Content-Type: {{content_type}}
+
+{
+  "items": [
+    {
+      "product_id": "{product_id}",
+      "quantity": 1,
+      "price": 45.99
+    }
+  ],
+  "shipping_address": "123 Main St, Springfield, IL 62701",
+  "is_custom": false
+}
+
+---
+
+### Get User Orders
+GET {{base_url}}/api/orders
+Authorization: Bearer {{access_token}}
+
+---
+
+### Get Order Details
+GET {{base_url}}/api/orders/{order_id}
+Authorization: Bearer {{access_token}}
+
+---
+
+## ==================== AI DESIGN ENDPOINTS ====================
+
+### Generate AI Design
+POST {{base_url}}/api/designs
+Authorization: Bearer {{access_token}}
+Content-Type: {{content_type}}
+
+{
+  "prompt": "A cloud-shaped baby mobile in pastel pinks and whites",
+  "style": "cute"
+}
+
+---
+
+### Get User Designs
+GET {{base_url}}/api/designs
+Authorization: Bearer {{access_token}}
+
+---
+
+### Get Design by ID
+GET {{base_url}}/api/designs/{design_id}
+Authorization: Bearer {{access_token}}
+
+---
+
+## ==================== ADMIN ENDPOINTS ====================
+
+### Get All Orders (Admin)
+GET {{base_url}}/api/admin/orders
+Authorization: Bearer {{access_token}}
+
+---
+
+### Get All Designs (Admin)
+GET {{base_url}}/api/admin/designs
+Authorization: Bearer {{access_token}}
+
+---
+
+### Get All Users (Admin)
+GET {{base_url}}/api/admin/users
+Authorization: Bearer {{access_token}}
+
+---
+
+### Update Order Status (Admin)
+PUT {{base_url}}/api/admin/orders/{order_id}
+Authorization: Bearer {{access_token}}
+Content-Type: {{content_type}}
+
+{
+  "status": "in_progress"
+}
